@@ -1,0 +1,348 @@
+== Utility Belt
+
+by Giles Bowkett (and many others)
+
+http://utilitybelt.rubyforge.org
+
+== DESCRIPTION
+  
+Utility Belt is a grab-bag of tricks, tools, techniques, trifles, and toys for IRB, including convenience methods, language patches, and useful extensions. It also includes a couple command-line widgets. Its primary inspirations were an awesome gem called Wirble and a blog post by Amy Hoy called "Secrets Of The Rails Console Ninjas".
+
+(http://slash7.com/articles/2006/12/21/secrets-of-the-rails-console-ninjas)
+
+== INSTALL
+
+sudo gem install utility_belt
+
+== FEATURES
+
+* Interactively edit IRB code in your preferred text editor
+* Read from and write to OS X clipboard
+* Post your code to Pastie with one command (OS X only)
+* Kick-ass Unix-style history buffer
+* Write command history to file or vi
+* Grep classes and methods for strings
+* Verbosity controls for regular IRB and Rails console
+* Finder shortcuts for Rails console
+* Upload shortcut for Amazon S3
+* Command-line Amazon S3 upload script
+* Command-line Google shortcut (OS X only)
+* Auto-indentation
+* _ special variable (like Unix shell var !!)
+* Extremely basic themes for Wirble syntax coloring
+* Pascal/JavaScript-style "with" statement
+* String#to_proc
+* Add and subtract Hashes with + and -
+* Grammatically-correct is_an? method - no more "is_a? Array" statements
+* One-character exit command
+
+== COMMUNITY EFFORT
+
+The majority of this code was written by other people and compiled, nicked, nabbed, herded, gathered, copied, or pilfered by me (Giles Bowkett). See copyright notice for the credits. A lot of this code comes from blogs. Check out the source code for numerous links to the original posts the code came from. Thanks also to Bob Hutchison, Avdi Grimm, Marcus Derencius, Markus Prinz, Ben Bleything, Reginald Braithwaite-Lee, and Robert Berger for bug fixes, new features, documentation, and bug reports.
+
+== SYNOPSIS
+
+Utility Belt gives you a ton of new options and techniques in IRB. (You may find yourself putting its language patches in actual projects as well.) The way to use Utility Belt is to edit, or create, your .irbrc file. This is analogous to a Unix .bashrc, .tcshrc, .profile, or similar file.
+
+Windows users have a couple options. The easiest is to define an environment variable called IRBRC and set it to the full path of your irbrc (e.g. "C:\Documents and Settings\<username>\_irbrc"). Presto, .irbrc for Windows. You could also set your HOME-Variable to any directory you want and put your ".irbrc" in there. (It needs to be called ".irbrc", "_irbrc" won't work). Since Windows Explorer won't let you create a file with a dot in the beginning, use any text editor (Notepad will do just fine) and "Save As" to save it as ".irbrc". (The quotation marks make the magic happen.) We don't recommend this if you're also using MSYS or Cygwin, as they use the same variable for their own purposes.
+
+Adding Utility Belt to your .irbrc is easy:
+
+  require 'rubygems'
+  require 'utility_belt'
+
+To use the Amazon shortcuts, you also need to set some environment variables. See the section on S3 under "Usage" for more. Also, if your terminal has a light background, you'll need to enable the light-background syntax coloring theme - see the section on themes under "Usage" for more.
+
+== USAGE
+
+Using each of Utility Belt's tools is different:
+
+== Interactively edit IRB code in your preferred text editor
+
+If your preferred text editor is vi(m), emacs, or TextMate, there are built-in commands: vi, emacs, and mate, respectively. To use another editor, use this command:
+
+  edit_interactively(:the_name_of_my_editor)
+
+or
+
+  edit_interactively("the name of my editor")
+
+or
+
+  edit_interactively("/the/path/to/my/editor")
+
+If you're wondering why the method name is so ridiculously long, there's a story there:
+
+http://gilesbowkett.blogspot.com/2007/12/utility-belt-vs-rails.html
+
+== Read from and write to OS X clipboard
+
+To read:
+
+  MacClipboard.read
+
+To write:
+
+  MacClipboard.write("something")
+
+== Post your code to Pastie with one command (OS X only)
+
+First copy some code into your clipboard, or put it there with the MacClipboard.write() class method. Then use the command:
+
+  pastie
+
+or the shortcut version:
+
+  pst
+
+Note that this method currently auto-formats all code as Ruby. Support for other languages is possible but not implemented yet. Also, this code is OS X only because it uses the MacClipboard. (A platform-agnostic version without the clipboard aspect is certainly possible.)
+
+== Unix-style history buffer
+
+Use "h" or "history" to view your command history, and "h! 123" to re-invoke command #123 in your buffer. "h!" with no args will run the last command.
+
+== Write command history to file or vi
+
+To write your history to a file, use "history_write('/path/to/file')". To edit your history in vi, use "history_to_vi" or its shortcut alias "hvi".
+
+== Grep classes and methods for strings
+
+Classes:
+
+  >> grep_classes("ixnum")
+  #=> ["Fixnum"]
+
+  >> grep_classes("num")
+  #=> ["Bignum", "Fixnum", "Numeric", "REXML::SyncEnumerator"]
+
+Methods:
+
+  >> "any arbitrary string".grep_methods("pretty")
+  #=> ["pretty_inspect", "pretty_print_instance_variables", "pretty_print_inspect", "pretty_print", "pretty_print_cycle"]
+
+  >> 32.grep_methods("*")
+  #=> ["*", "**"]
+
+At some point it'll probably be a good idea to add regex support for these methods.
+
+== Verbosity controls for regular IRB and Rails console
+
+regular IRB: "verbose" or "v" / "quiet" or "q"
+
+Rails: "log" method turns verbosity on, there isn't actually any method for turning it off. (Might add one at some point.)
+
+== Finder shortcuts for Rails console
+
+  user(:all) / user(1)
+
+instead of
+
+  User.find(:all) / User.find(1)
+
+Supports arbitrarily complex finds.
+
+== Upload shortcut for Amazon S3
+
+First, define your secret keys in your environment variables:
+
+export AMAZON_ACCESS_KEY_ID='foofoofoofoofoo'
+export AMAZON_SECRET_ACCESS_KEY='barbarbarbarbar'
+
+(Obviously, replace those with actual values.)
+
+Then, you can use
+
+  aws_upload("bucket_name","filename")
+
+To easily upload public-access files. This method will automatically connect to Amazon S3 for you, if your keys are defined in your environment variables. It also writes the resulting Amazon URL to your clipboard, if you're on OS X, so you can easily share the file with others. Note that you have to create the initial buckets manually - see amazon.rubyforge.org for details on that.
+
+A good way to use this is actually to have a default bucket, and create a further method in your .irbrc file:
+
+  def my_bucket_name(filename)
+    aws_upload("my_default_bucket",filename)
+  end
+
+== Command-line Amazon S3 upload script
+
+Utility Belt also includes amazon, a simple command-line uploader for S3. It requires that you set your Amazon environment variables (see above). The usage is:
+
+  amazon -b my_bucket_name filename other_filename
+
+(For any arbitrary number of filenames.)
+
+Anytime you want to upload a file to your default bucket on S3, for example, the "images" bucket for your blog - or the "mp3" bucket if you're running a blog like Projectionist - all you have to do is
+
+  amazon -b blog_files some_file.name
+
+Or
+
+  amazon --bucket blog_files some_file.name
+
+And you're good to go. Of course, if that were too many characters to type, you could always take it one step further with a shell script. For instance, in bash:
+
+  alias b1="amazon --bucket my_main_bucket $1"
+  alias b2="amazon --bucket my_other_bucket $1"
+
+And then you would only have to type:
+
+  b1 file.name
+
+And of course tab completion will handle all the typing of the file name, assuming you choose your file names deliberately ahead of time to make tab completion effective, in which case all you have to type is "b1 f[tab]" and bam.
+
+== Command-line Google shortcut (OS X only)
+
+To pop open a new window in your default browser with Google search results for a given search term, do:
+
+  google "any given term"
+
+For one-word terms, you can omit the quotes:
+
+  google term
+
+If you already have the search term in your clipboard, you can just type:
+
+  google
+
+(The last approach is useful for unusual command-line error messages.)
+
+== Auto-indentation and tab completion
+
+Just type as normally. This just enables built-in but underused functionality in IRB. (The IRB default auto-indentation isn't perfect, but it clobbers the living hell out of no indentation at all.)
+
+== _ special variable (like Unix shell var !!)
+
+More activation of built-in but underused functionality in IRB. _ functions like !! in Unix, with one subtle difference. Instead of re-issuing the previous command in your history, it gives you the last result of evaluating a command. This means when you start a new IRB session, _ won't go to your history, it'll just give you nil, and it means that some commands can't be repeated exactly. Nine out of ten times, however, it's pretty much the same thing.
+
+Note that when combined with the h! in the command history code, you basically have two synonyms for !! here. Neither one is an exact replica, but between the two of them, you should have what you need.
+
+== Extremely basic themes for Wirble syntax coloring
+
+Utility Belt incorporates Wirble as a dependency. Wirble provides syntax coloring. Utility Belt allows you to choose between two syntax coloring themes: Wirble's default, and an alternate color set for terminals with light backgrounds. The default theme is enabled by default (duh), but if you have a terminal with a light background, you can enable the light-background theme just by putting the following line of code in your .irbrc:
+
+  UtilityBelt::Themes.background(:light)
+
+To revert back to the default, just use this:
+
+  UtilityBelt::Themes.background(:dark)
+
+To specify an entirely new syntax color scheme, see the source code for this gem or for Wirble.
+
+== Pascal/JavaScript-style "with" statement
+
+I use this with RSpec's spec_helper. Instead of:
+
+  Spec::Runner.configure do |config|
+    config.use_transactional_fixtures = true
+    config.use_instantiated_fixtures  = false
+    config.fixture_path = RAILS_ROOT + '/spec/fixtures'
+    config.mock_with :flexmock
+  end
+
+I do this:
+
+  Spec::Runner.configure do |config|
+    with(config) do
+      use_transactional_fixtures = true
+      use_instantiated_fixtures  = false
+      fixture_path = RAILS_ROOT + '/spec/fixtures'
+      mock_with :flexmock
+    end
+  end
+
+Note however that this blew up once and I have no idea why. Caveat emptor, et cetera.
+
+== String#to_proc
+
+Syntactic sugar for functional programming.
+
+  (1..3).map(&'*2') => [2, 4, 6]
+  (1..3).map(&'[-1, _, 0]') => [[-1, 1, 0], [-1, 2, 0], [-1, 3, 0]]
+  (1..3).map(&'x -> y -> x * y').map(&'[2]') => [2, 4, 6]
+  (1..5).select(&'>2') => [3, 4, 5]
+  (1..3).map(&'x -> y -> x * y').map(&'.call(2)') => [2, 4, 6]
+  [5].map(&"(1.._).inject(&'*')") => [120]
+
+For more detail see: http://weblog.raganwald.com/2007/10/stringtoproc.html
+
+== Add and subtract Hashes with + and -
+
+  {:a => :b} + {:c => :d} = {:a => :b, :c => :d}
+  {:a => :b, :c => :d} - {:c => :d} = {:a => :b}
+  {:a => :b, :c => :d} - :c = {:a => :b}
+
+  You could already do this with Arrays; now you can do it with Hashes as well. (I was kinda surprised the first time I tried to do this and realized I'd have to write it myself.)
+
+== Grammatically-correct is_an? method - no more "is_a? Array" statements
+
+  >> [].is_an? Array
+  #=> true
+
+Most people don't care, but personally, "is_a? Array" drives me completely insane.
+
+== Object#not
+
+Replace this:
+
+  if !response.incomplete? && !response.invalid? && response.total > 0
+
+With this:
+
+  if response.not.incomplete? && response.not.invalid? && response.total > 0
+
+Syntactic sugar for boolean conditions.
+
+More detail here:
+
+http://blog.jayfields.com/2007/08/ruby-adding-not-method-for-readability.html
+
+== One-character exit command
+
+x
+
+Because life is too short to type whole words.
+
+== REQUIREMENTS
+
+* ReadLine
+* Wirble
+* Amazon S3
+* Platform
+* Some features require OS X
+
+== LICENSE
+
+  (The MIT License)
+
+  Copyright (c) 2006-2007 Giles Bowkett
+  Portions Copyright (c) 2006-2007 Ben Bleything
+  Portions Copyright (c) 2006-2007 Reginald Braithwaite
+  Portions Copyright (c) 2006-2007 Gregory Brown
+  Portions Copyright (c) 2006-2007 Jamis Buck
+  Portions Copyright (c) 2006-2007 Mike Clark
+  Portions Copyright (c) 2006-2007 Jay Fields
+  Portions Copyright (c) 2005 David Heinemeier Hansson
+  Portions Copyright (c) 2006-2007 Ara T. Howard
+  Portions Copyright (c) 2006-2007 Pat Maddox
+  Portions Copyright (c) 2006-2007 Marcel Molina, Jr.
+  Portions Copyright (c) 2006-2007 Rick DeNatale
+  Portions Copyright (c) 2006-2007 Projectionist (Marcel Molina? Chad Fowler?)
+  Portions Copyright (c) 2006-2007 Dan Yoder
+
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  'Software'), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
