@@ -5,7 +5,7 @@
 
 UTILITY_BELT_IRB_STARTUP_PROCS = {} unless Object.const_defined? :UTILITY_BELT_IRB_STARTUP_PROCS
 
-%w{rubygems utility_belt/equipper}.each {|internal_library| require internal_library}
+%w{rubygems active_support utility_belt/equipper}.each {|internal_library| require internal_library}
 
 if Object.const_defined? :IRB
 
