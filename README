@@ -87,6 +87,12 @@ To write:
 
 == Post your code to Pastie with one command (OS X and Windows only)
 
+You must first equip the UtilityBelt with pastie in your .irbrc:
+
+  UtilityBelt.equip(:pastie)
+  
+This line will also automatically equip the Clipboard, which is required to use pastie.
+
 First copy some code into your clipboard, or put it there with the Clipboard.write() class method. Then use the command:
 
   pastie
