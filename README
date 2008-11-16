@@ -75,19 +75,19 @@ If you're wondering why the method name is so ridiculously long, there's a story
 
 http://gilesbowkett.blogspot.com/2007/12/utility-belt-vs-rails.html
 
-== Read from and write to OS X clipboard
+== Read from and write to OS X or Windows clipboard
 
 To read:
 
-  MacClipboard.read
+  Clipboard.read
 
 To write:
 
-  MacClipboard.write("something")
+  Clipboard.write("something")
 
-== Post your code to Pastie with one command (OS X only)
+== Post your code to Pastie with one command (OS X and Windows only)
 
-First copy some code into your clipboard, or put it there with the MacClipboard.write() class method. Then use the command:
+First copy some code into your clipboard, or put it there with the Clipboard.write() class method. Then use the command:
 
   pastie
 
@@ -95,7 +95,7 @@ or the shortcut version:
 
   pst
 
-Note that this method currently auto-formats all code as Ruby. Support for other languages is possible but not implemented yet. Also, this code is OS X only because it uses the MacClipboard. (A platform-agnostic version without the clipboard aspect is certainly possible.)
+Note that this method currently auto-formats all code as Ruby. Support for other languages is possible but not implemented yet. Also, this code is OS X and Windows only because it uses the Clipboard. (A platform-agnostic version without the clipboard aspect is certainly possible.)
 
 == Unix-style history buffer
 
