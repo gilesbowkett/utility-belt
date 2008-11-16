@@ -65,19 +65,25 @@ require 'utility_belt'</pre>
 
 			<p>If you're wondering why the method name is so ridiculously long, <a href="http://gilesbowkett.blogspot.com/2007/12/utility-belt-vs-rails.html" title="Giles Bowkett: Utility Belt vs. Rails">there's a story there</a>.</p>
 
-			<h4>Read from and write to OS X clipboard</h4>
+			<h4>Read from and write to OS X or Windows clipboard</h4>
 
 			<p>To read:</p>
 
-<pre>MacClipboard.read</pre>
+<pre>Clipboard.read</pre>
 
 			<p>To write:</p>
 
-<pre>MacClipboard.write("something")</pre>
+<pre>Clipboard.write("something")</pre>
 
-			<h4>Post your code to Pastie with one command (OS X only)</h4>
+			<h4>Post your code to Pastie with one command (OS X and Windows only)</h4>
 
-			<p>First copy some code into your clipboard, or put it there with the MacClipboard.write() class method. Then use the command:</p>
+      <p>You must first equip the UtilityBelt with pastie in your .irbrc:</p>
+      
+<pre>UtilityBelt.equip(:pastie)</pre>
+
+      <p>This line will also automatically equip the Clipboard, which is required to use pastie.</p>
+
+			<p>First copy some code into your clipboard, or put it there with the Clipboard.write() class method. Then use the command:</p>
 
 <pre>pastie</pre>
 
@@ -85,7 +91,7 @@ require 'utility_belt'</pre>
 
 <pre>pst</pre>
 
-			<p>Note that this method currently auto-formats all code as Ruby. Support for other languages is possible but not implemented yet. Also, this code is OS X only because it uses the MacClipboard. (A platform-agnostic version without the clipboard aspect is certainly possible.)</p>
+			<p>Note that this method currently auto-formats all code as Ruby. Support for other languages is possible but not implemented yet. Also, this code is OS X and Windows only because it uses the Clipboard. (A platform-agnostic version without the clipboard aspect is certainly possible.)</p>
 
 			<h4>Unix-style history buffer</h4>
 
