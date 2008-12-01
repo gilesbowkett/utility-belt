@@ -77,6 +77,8 @@ http://gilesbowkett.blogspot.com/2007/12/utility-belt-vs-rails.html
 
 == Read from and write to OS X or Windows clipboard
 
+In order to use Clipboard on Windows you must install the 'win32-clipboard' gem.
+
 To read:
 
   Clipboard.read
