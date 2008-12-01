@@ -19,6 +19,7 @@ module UtilityBelt
       when :macosx
         Kernel.system("open #{pastie_url}")
       when :mswin
+        pastie_url = pastie_url.chop if pastie_url[-1].chr == "\000"
         Kernel.system("start #{pastie_url}")
       end
 
