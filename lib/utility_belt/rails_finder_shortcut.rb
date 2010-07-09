@@ -2,7 +2,7 @@
 # Mike Clark's find() shortcut for Rails console
 
 # Creates shortcut methods for finding models.
-UTILITY_BELT_IRB_STARTUP_PROCS[:define_model_find_shortcuts] = lambda do
+UTILITY_BELT_IRB_STARTUP_PROCS[:define_model_find_shortcuts] = proc do
   if defined? ActiveRecord::Base || defined? ActiveResource::Base
     model_files = Dir.glob("app/models/**/*.rb")
     table_names = model_files.map { |f| File.basename(f).split('.')[0..-2].join }

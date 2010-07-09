@@ -12,7 +12,7 @@ if Object.const_defined? :IRB
   # Called when the irb session is ready, after any external libraries have been loaded. This
   # allows the user to specify which gadgets in the utility belt to equip. (Kind of pushing the
   # metaphor, but hey, what the hell.)
-  IRB.conf[:IRB_RC] = lambda do
+  IRB.conf[:IRB_RC] = proc do
     UtilityBelt.equip(:defaults) unless UtilityBelt.equipped?
     UTILITY_BELT_IRB_STARTUP_PROCS.each {|symbol, proc| proc.call}
   end
