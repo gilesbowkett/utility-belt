@@ -1,7 +1,0 @@
-#!/usr/bin/env ruby
-%w{rubygems platform net/http utility_belt}.each {|library| require library}
-
-UtilityBelt.equip(:google)
-include UtilityBelt::Google
-
-google(ARGV[0])

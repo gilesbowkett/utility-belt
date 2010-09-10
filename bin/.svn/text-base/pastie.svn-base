@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-%w{rubygems utility_belt}.each {|library| require library}
-UtilityBelt.equip(:pastie)
-include UtilityBelt::Pastie
-
-pastie(ARGV[0])
