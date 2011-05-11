@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "utility_belt"
-  s.version = "1.1.0"
+  s.version = "1.1.1"
   s.author = "Giles Bowkett"
   s.email = "gilesb@gmail.com"
   s.homepage = "http://utilitybelt.rubyforge.org"
@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
   end
   s.require_path = "lib"
   s.test_file = "spec/utility_belt_spec.rb"
-  s.has_rdoc = true 
   s.extra_rdoc_files = ["README"]
   s.add_dependency("activesupport")
   s.add_dependency("wirble", ">= 0.1.2")
