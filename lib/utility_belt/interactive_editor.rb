@@ -29,7 +29,7 @@ class InteractiveEditor
   end
   def edit_interactively
     unless @file
-      @file = Tempfile.new("irb_tempfile")
+      @file = Tempfile.new(["irb_tempfile", ".rb"])
     end
     system("#{@editor} #{@file.path}")
     Object.class_eval(`cat #{@file.path}`)
