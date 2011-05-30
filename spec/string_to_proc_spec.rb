@@ -10,13 +10,13 @@ describe "String to Proc" do
     @one2five.map(&'x -> x + 1').should eql(@one2five.map { |x| x + 1 })
     @one2five.map(&'x -> x*x').should eql(@one2five.map { |x| x*x })
     @one2five.inject(&'x y -> x*y').should eql(@one2five.inject { |x,y| x*y })
-    'x y -> x**y'.to_proc()[2,3].should eql(lambda { |x,y| x**y }[2,3])
-    'y x -> x**y'.to_proc()[2,3].should eql(lambda { |y,x| x**y }[2,3])
+    'x y -> x**y'.to_proc()[2,3].should eql(proc { |x,y| x**y }[2,3])
+    'y x -> x**y'.to_proc()[2,3].should eql(proc { |y,x| x**y }[2,3])
   end
 
   it "should handle chained arrows" do
-    'x -> y -> x**y'.to_proc()[2][3].should eql(lambda { |x| lambda { |y| x**y } }[2][3])
-    'x -> y z -> y**(z-x)'.to_proc()[1][2,3].should eql(lambda { |x| lambda { |y,z| y**(z-x) } }[1][2,3])
+    'x -> y -> x**y'.to_proc()[2][3].should eql(proc { |x| proc { |y| x**y } }[2][3])
+    'x -> y z -> y**(z-x)'.to_proc()[1][2,3].should eql(proc { |x| proc { |y,z| y**(z-x) } }[1][2,3])
   end
 
   it "should handle the default parameter" do

@@ -32,7 +32,7 @@ describe InteractiveEditor, "given no clues as to what editor to use" do
   end
 
   it "should complain" do
-    lambda do
+    proc do
       InteractiveEditor.sensible_editor
     end.should raise_error
   end
